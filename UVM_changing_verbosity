@@ -1,0 +1,52 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+///////////////////
+class driver extends uvm_driver;
+  `uvm_component_utils(driver);
+  function new (string path , uvm_component parent);
+    super.new (path, parent);
+  endfunction
+  task run();
+    `uvm_info("DRV", "Hi! there this is Driver calling from the environment",300);   
+  endtask 
+endclass
+
+////////////////////
+class monitor extends uvm_monitor;
+  `uvm_component_utils(monitor);
+  function new (string path , uvm_component parent);
+    super.new (path, parent);
+  endfunction
+  task run();
+    `uvm_info("MON", "Hi! there this is Monitor calling from the environment",100);   
+  endtask 
+endclass
+
+////////////////////
+class environment extends uvm_env;
+  `uvm_component_utils(environment);
+  driver d;
+  monitor m;
+  
+  function new (string path , uvm_component parent);
+    super.new (path, parent);
+  endfunction
+  task run();
+    d = new ("DRV", null);
+    m = new ("MON", null);
+    `uvm_info("ENV", "Hi! there this is Environment calling from the environment",200);  
+    d.run();
+    m.run();
+  endtask 
+endclass
+
+////////////////////
+module tb;
+environment e;
+  initial begin
+    e = new("ENV",null);
+    e.set_report_verbosity_level(500);
+    e.run();    
+  end
+endmodule 
