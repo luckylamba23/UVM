@@ -1,0 +1,49 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class obj extends uvm_object();
+  
+  function new (string path = "obj");
+    super.new(path);   
+  endfunction
+  
+  int arr1[3] = {1,2,3};
+  int arr2[];
+  int arr3[int];
+  int arr4[$];
+  
+  `uvm_object_utils_begin(obj)
+  `uvm_field_sarray_int(arr1, UVM_DEFAULT);
+  `uvm_field_array_int(arr2, UVM_DEFAULT);
+  `uvm_field_queue_int(arr4, UVM_DEFAULT);
+  `uvm_field_aa_int_int(arr3, UVM_DEFAULT);
+  `uvm_object_utils_end
+  
+  task run;
+    /////////// Dynamic array
+    arr2 = new[3];
+    arr2[0] = 1;
+    arr2[1] = 2;
+    arr2[2] = 4;
+    
+    /////////// Assosiative array
+    arr3[1] = 2;
+    arr3[2] = 4;
+    arr3[3] = 4;
+    arr3[4] = 6;
+    
+    ////////// Queue
+    arr4.push_front(3);
+    arr4.push_back(4);
+    arr4.push_front(5);
+  endtask
+  endclass
+
+module tb;
+  obj o;
+  initial begin
+    o = new ("obj");
+    o.run();
+    o.print();
+  end
+endmodule
