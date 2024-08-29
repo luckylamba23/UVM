@@ -1,0 +1,26 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class obj extends uvm_object;
+  
+  function new (string path = "obj");
+    super.new(path);
+  endfunction
+  
+  rand bit [4:0] data1;
+  
+  `uvm_object_utils_begin(obj)
+  `uvm_field_int(data1 , UVM_DEFAULT);  
+  `uvm_object_utils_end
+  
+endclass
+
+module tb;
+  obj o;
+  initial begin
+    o = new ("obj");
+    o.randomize();
+    o.print();
+  end
+  
+endmodule
