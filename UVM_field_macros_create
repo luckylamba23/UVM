@@ -1,0 +1,29 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class obj extends uvm_object;
+  function new (string path = "obj");
+    super.new (path);
+  endfunction
+  rand bit [6:0] data;
+  
+  `uvm_object_utils_begin(obj)
+  `uvm_field_int(data , UVM_DEFAULT);
+  `uvm_object_utils_end
+endclass
+
+module tb;
+ obj o1 , o2;
+  bit status;
+  initial begin
+    o1 = obj::type_id ::create ("o1");
+    o2 = obj::type_id :: create ("o2");
+    o1.randomize();
+    o2.randomize();
+    o1.print();
+    o2.print();
+    status = o1.compare(o2);
+    $display("Status of the comparision result is : %b",status);
+  end
+  
+endmodule
