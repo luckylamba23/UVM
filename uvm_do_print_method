@@ -1,0 +1,28 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class obj extends uvm_object;
+  `uvm_object_utils(obj)
+  
+  function new (string path = "obj");
+    super.new(path);
+  endfunction
+  
+  bit [4:0] a = 20;
+  string b = "Lucky";
+  real c = 6.43;
+  
+  virtual function void do_print(uvm_printer printer);
+    printer.print_field_int ("A",a,$bits(a),UVM_HEX);
+    printer.print_string ("B",b);
+    printer.print_real ("C",c);
+  endfunction
+endclass
+
+module tb;
+  obj o;
+  initial begin
+    o= obj::type_id::create("o");
+  o.print();
+  end
+endmodule
